@@ -2,15 +2,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
 
-const Stack = createNativeStackNavigator();
+import HomeScreen from "./Screens/HomeScreen";
 
-const HomeScreen = () => {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  );
-};
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
