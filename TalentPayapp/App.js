@@ -1,21 +1,69 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HomeScreen from "./Screens/HomeScreen";
+import SettingScreen from "./Screens/SettingScreen";
+import HelpScreen from "./Screens/HelpScreen";
 
-const Stack = createNativeStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
+      <Tab.Navigator initialRouteName="Home">
+        <Tab.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerShown: false }}
+          activeColor="#f0edf6"
+          inactiveColor="#3e2465"
+          barStyle={{ backgroundColor: "#694fad" }}
+          options={{
+            headerShown: false,
+            title: "홈",
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="home" color={color} size={32} />
+            ),
+          }}
         />
-      </Stack.Navigator>
+        <Tab.Screen
+          name="Setting"
+          component={SettingScreen}
+          activeColor="#f0edf6"
+          inactiveColor="#3e2465"
+          barStyle={{ backgroundColor: "#694fad" }}
+          options={{
+            headerShown: false,
+            title: "설정하기",
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="cog-outline"
+                color={color}
+                size={32}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Help"
+          component={HelpScreen}
+          activeColor="#f0edf6"
+          inactiveColor="#3e2465"
+          barStyle={{ backgroundColor: "#694fad" }}
+          options={{
+            headerShown: false,
+            title: "도움요청",
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="comment-alert"
+                color={color}
+                size={32}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
