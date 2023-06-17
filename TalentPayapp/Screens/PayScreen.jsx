@@ -29,7 +29,8 @@ export default function PayScreen({ route }) {
 
   useEffect(() => {
     if (id !== -1) {
-      getUser();
+      res = getUser(id);
+      if (res?.length) setUserInfo(res[0]);
     }
   }, [id]);
 
