@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
 import QrScanner from "../Components/QrScanner";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.wrapper}>
-      <QrScanner />
+      <QrScanner navigation={navigation} target={"pay"} />
     </View>
   );
 }
