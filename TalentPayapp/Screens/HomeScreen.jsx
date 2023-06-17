@@ -1,8 +1,8 @@
+import { View, Text, StyleSheet, Button, Alert, Image } from "react-native";
+import QrScanner from "../Components/QrScanner";
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import QrScanner from '../Components/QrScanner';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.wrapper}>
       <View style={styles.logoContainer}>
@@ -15,6 +15,20 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   wrapper: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+
+    backgroundColor: "#DDE",
+  },
+  container: {
+    width: 300,
+    height: 300,
+
+    borderRadius: 20,
+    overflow: "hidden",
     flex: 1,
   },
   logoContainer: {
