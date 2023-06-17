@@ -39,42 +39,21 @@ export default function QrScanner({ navigation, target = "pay" }) {
   };
 
   return (
-    <View style={styles.wrapper}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", margin: 10 }}>
-        학생의 QR 코드를 촬영해주세요!
-      </Text>
-      <View style={styles.container}>
-        <Camera
-          style={styles.scanner}
-          ref={ref}
-          cameraType={CameraType.Back} // Front/Back(default)
-          // Barcode Scanner Props
-          scanBarcode={true}
-          showFrame={false}
-          laserColor="rgba(0, 0, 0, 0)"
-          frameColor="rgba(0, 0, 0, 0)"
-          surfaceColor="rgba(0, 0, 0, 0)"
-          onReadCode={barCodeReadHandle}
-        />
-      </View>
-    </View>
+    <Camera
+      style={styles.scanner}
+      ref={ref}
+      cameraType={CameraType.Back} // Front/Back(default)
+      // Barcode Scanner Props
+      scanBarcode={true}
+      showFrame={false}
+      laserColor="rgba(0, 0, 0, 0)"
+      frameColor="rgba(0, 0, 0, 0)"
+      surfaceColor="rgba(0, 0, 0, 0)"
+      onReadCode={barCodeReadHandle}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  container: {
-    width: 300,
-    height: 300,
-
-    borderRadius: 20,
-    overflow: "hidden",
-  },
   scanner: { flex: 1 },
 });
