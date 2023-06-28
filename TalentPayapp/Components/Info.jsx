@@ -1,7 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-
-
 export default function Info() {
     return (
         <View style={styles.wrapper}>
