@@ -1,4 +1,5 @@
 # Python Virtual Environment
 venv
 images/*.png
-*.xlsx
+data/*.txt
+data/*.xlsx
