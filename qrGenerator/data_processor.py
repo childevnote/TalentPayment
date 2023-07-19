@@ -1,7 +1,12 @@
+import qrcode
+import random
+
 def main():
     filepath = "./data/"
     # filename = "participants.txt"
     filename = "test.txt"
+
+    qrFilename = ""
 
     with open(f"{filepath}{filename}", mode="+r") as fs:
         curIdx = 0
@@ -13,14 +18,18 @@ def main():
                 newData = line.split("\t")
 
                 if newData[3] == "TRUE":
-                    print(f"{newData[1]}_선생님")
+                    qrFilename = f"{newData[1]}_선생님"
                 else:
                     if newData[4][-1:] == "\n":
-                        print(f"{newData[1]}_{newData[4][:-1]}")
+                        qrFilename = f"{newData[1]}_{newData[4][:-1]}.png"
                     else:
-                        print(f"{newData[1]}_{newData[4]}")
+                        qrFilename = f"{newData[1]}_{newData[4]}.png"
 
                 curIdx += 1
+            
+            newId = int(random.random()*1000)+1000*random.randint(1, 9)
+            newImg = qrcode.make(f"{newId}")
+            newImg.save(f"images/{qrFilename}_{newId}.png")
 
     return True
 
