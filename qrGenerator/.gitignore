@@ -3,3 +3,7 @@ venv
 images/*.png
 data/*.txt
 data/*.xlsx
+list.txt
+fonts/*.ttc
+*.zip
+processed_qrcodes/*.png
