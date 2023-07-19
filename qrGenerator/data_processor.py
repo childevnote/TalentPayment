@@ -15,7 +15,10 @@ def main():
                 if newData[3] == "TRUE":
                     print(f"{newData[1]}_선생님")
                 else:
-                    print(f"{newData[1]}_{newData[4]}")
+                    if newData[4][-1:] == "\n":
+                        print(f"{newData[1]}_{newData[4][:-1]}")
+                    else:
+                        print(f"{newData[1]}_{newData[4]}")
 
                 curIdx += 1
 
