@@ -1,9 +1,17 @@
 # Python Virtual Environment
 venv
+*.zip
+
 images/*.png
+processed_qrcodes/*.png
+
 data/*.txt
 data/*.xlsx
-list.txt
+data/*.jpg
+
 fonts/*.ttc
-*.zip
-processed_qrcodes/*.png
+fonts/*.ttf
+
+namecards/*.png
+
+list.txt
