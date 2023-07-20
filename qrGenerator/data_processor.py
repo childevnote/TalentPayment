@@ -16,25 +16,28 @@ def main():
     
     duplicateChecker = ["3890"]
 
+    ##
+    # Data Format : dividing with tab(\t)
+    # team, name, role or bod, isTeacher, bod(if teacher, null)
+    #
+    # ex - teacher
+    # 1	아무개	교사 혹은 스태프	TRUE	
+    #
+    # ex - student
+    # 1	야무개	고2(06년생)	FALSE	06년생
+    ##
     with open(f"{filepath}{filename}", mode="+r") as fs:
-        curIdx = 0
         for line in fs:
-            if curIdx == 0:
-                curIdx += 1
-                continue
+            newData = line.split("\t")
+
+            if newData[3] == "TRUE":
+                qrFilename = f"{newData[1]}_선생님"
             else:
-                newData = line.split("\t")
-
-                if newData[3] == "TRUE":
-                    qrFilename = f"{newData[1]}_선생님"
+                if newData[4][-1:] == "\n":
+                    qrFilename = f"{newData[1]}_{newData[4][:-1]}"
                 else:
-                    if newData[4][-1:] == "\n":
-                        qrFilename = f"{newData[1]}_{newData[4][:-1]}"
-                    else:
-                        qrFilename = f"{newData[1]}_{newData[4]}"
+                    qrFilename = f"{newData[1]}_{newData[4]}"
 
-                curIdx += 1
-            
             qrNames.append(qrFilename)
             
             newId = 1000
