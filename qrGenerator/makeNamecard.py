@@ -35,11 +35,17 @@ def main():
             teams[newTeam - 1].append(newName)
         f.close()
 
+    images = ["강성빈_선생님_9627.png"]
+
     for image in images:
         qrFileName = image
+        name, bod, id = qrFileName.split("_")
 
-        name = qrFileName.split("_")[0]
         print(f"{name} 명찰을 만들기 시작합니다")
+
+        if bod == "선생님":
+            print("선생님 데이터는 건너뜁니다")
+            continue
         
         team = 0
         for i in range(11):
@@ -88,12 +94,13 @@ def main():
                 percentage = int((progress / total )* barWidth)
                 print("Progress [", "█" * percentage, " " * (barWidth - percentage), f"] {progress} / {total}", end="\r")
         
-        newImage = cv2.putText(newImage, "1234", (1300, 1050), cv2.FONT_HERSHEY_SIMPLEX, 6, (0, 0, 0), 18)
+        newImage = cv2.putText(newImage, id, (1300, 1050), cv2.FONT_HERSHEY_SIMPLEX, 6, (0, 0, 0), 18)
         
         # cv2.imshow("image", newImage)
         cv2.imwrite(f"{outPath}/{image}", newImage)
         print("")
 
+    print("명찰이 모두 생성되었습니다!")
     return True
 
 if __name__ == "__main__":
