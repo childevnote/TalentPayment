@@ -66,8 +66,25 @@ class userHandle {
     if (!USER)
       console_logger("Service Error", "There is no such named user", true);
 
-    console.log(USER?.id);
-    return USER?.id;
+    console.log(USER?.talent);
+    return USER?.talent;
+  }
+
+  static async getUserTeam({ id }) {
+    if (!id)
+      console_logger(
+        "Service Error",
+        "UserService : no id for getTalentAccount method",
+        true
+      );
+
+    const USER = await User.findById({ id });
+
+    if (!USER)
+      console_logger("Service Error", "There is no such named user", true);
+
+    console.log(USER?.team);
+    return USER?.team;
   }
 
   static async updateTalent({ id, updateAmount }) {

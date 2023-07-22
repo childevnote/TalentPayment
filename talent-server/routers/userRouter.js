@@ -16,25 +16,33 @@ userRouter.post("/user/create", async (req, res, next) => {
   }
 });
 
-userRouter.post("/user/read", async (req, res, next) => {
+userRouter.post("/user/find", async (req, res, next) => {
   try {
     const { id } = req.body;
     const USER_NAME = await userHandle.getUserName({ id });
     const USER_ACCOUNT = await userHandle.getTalentAccount({ id });
+    const USER_TEAM = await userHandle.getUserTeam({ id });
 
     if (!USER_NAME) {
       console_logger("Router Error", "no user name queried", true);
       res.status(503).send({ result: "query failed" });
     }
 
-    if (!USER_ACCOUNT) {
-      console_logger("Router Error", "no user talent account. why?", true);
+    if (USER_ACCOUNT !== 0 && !USER_ACCOUNT) {
+      console_logger("Router Error", "no user talent account", true);
       res.status(503).send({ result: "failed to get talent account" });
     }
 
-    res.status(201).send({ username: USER_NAME, account: USER_ACCOUNT });
+    if (!USER_TEAM) {
+      console_logger("Router Error", "no user team", true);
+      res.status(503).send({ result: "failed to get user's team" });
+    }
+
+    res
+      .status(201)
+      .send({ username: USER_NAME, talent: USER_ACCOUNT, team: USER_TEAM });
   } catch (err) {
-    console_logger("Router Error", err.message, true);
+    console_logger("R.Error Catcher", err.message, true);
   }
 });
 
