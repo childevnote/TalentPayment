@@ -15,12 +15,18 @@ const UserSchema = new mongoose.Schema({
   id: {
     // need to same with QR Data
     type: Number,
-    min: 100000,
-    max: 999999,
-    default: 100000,
+    min: 1000,
+    max: 9999,
+    default: 1000,
     required: true,
-    unique: true
-  }
+    unique: true,
+  },
+  team: {
+    type: Number,
+    required: true,
+    unique: false,
+    default: -1, // -1 means no team
+  },
 });
 
 const UserModel = mongoose.model("User", UserSchema);
