@@ -4,7 +4,8 @@ import os
 
 def main():
     filepath = "./data/"
-    filename = "participants.txt"
+    # filename = "participants.txt"
+    filename = "addition.txt"
     # filename = "test.txt"
 
     qrFilename = ""
@@ -14,7 +15,16 @@ def main():
     if os.path.exists(writeFilename):
         os.remove(writeFilename)
     
-    duplicateChecker = ["3890"]
+    duplicateChecker = []
+    if os.path.exists("./images"):
+        filesInImages = os.listdir("./images")
+        generatedImages = []
+        for file in filesInImages:
+            if file[-4:] == ".png":
+                generatedImages.append(file)
+        for image in generatedImages:
+            number = image[-8:-4]
+            duplicateChecker.append(number)
 
     ##
     # Data Format : dividing with tab(\t)
@@ -28,15 +38,17 @@ def main():
     ##
     with open(f"{filepath}{filename}", mode="+r") as fs:
         for line in fs:
-            newData = line.split("\t")
+            team, name, bod_or_role, isTeacher, bod = line.split("\t")
 
-            if newData[3] == "TRUE":
-                qrFilename = f"{newData[1]}_선생님"
+            bod_or_role = "선생님" if bod_or_role == "교사 혹은 스태프" else bod_or_role
+
+            if isTeacher == "TRUE":
+                qrFilename = f"{name}_{bod_or_role}"
             else:
-                if newData[4][-1:] == "\n":
-                    qrFilename = f"{newData[1]}_{newData[4][:-1]}"
+                if bod[-1:] == "\n":
+                    qrFilename = f"{name}_{bod[:-1]}"
                 else:
-                    qrFilename = f"{newData[1]}_{newData[4]}"
+                    qrFilename = f"{name}_{bod}"
 
             qrNames.append(qrFilename)
             
@@ -51,7 +63,8 @@ def main():
                     break
 
             newImg = qrcode.make(f"{newId}")
-            newImg.save(f"images/{qrFilename}_{newId}.png")
+            # newImg.save(f"images/{qrFilename}_{newId}.png")
+            newImg.save(f"additionalImages/{qrFilename}_{newId}.png")
         
         fs.close()
     

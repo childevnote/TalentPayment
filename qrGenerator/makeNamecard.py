@@ -9,11 +9,14 @@ def main():
     dataSourcePath = "./data"
     fontPath = "./fonts"
     fontName = "BMDOHYEON_ttf.ttf"
-    qrPath = "./images"
+    # qrPath = "./images"
+    qrPath = "./additionalImages"
 
-    outPath = "./namecards"
+    # outPath = "./namecards"
+    outPath = "./additionalNamecards"
 
-    textFilename = "participants.txt"
+    # textFilename = "participants.txt"
+    textFilename = "addition.txt"
     teams = []
 
     files = os.listdir(f"{qrPath}/")
@@ -25,19 +28,22 @@ def main():
 
     for i in range(11):
         teams.append([])
-
+    
     with open(f"{dataSourcePath}/{textFilename}", "+r") as f:
         for line in f:
             newPerson = line.split("\t")
-            newTeam = int(newPerson[0])
+            newTeam = int(newPerson[0] if newPerson[0] != "-" else 0)
             newName = newPerson[1]
-
-            teams[newTeam - 1].append(newName)
+            
+            if newTeam != 0:
+                teams[newTeam - 1].append(newName)
         f.close()
     
     bods = ["10년생", "09년생", "08년생", "07년생", "06년생", "05년생"]
     grades = ["중1", "중2", "중3", "고1", "고2", "고3"]
 
+    # images = ["아무개_년생_아이디.png"]
+    
     for image in images:
         qrFileName = image
         name, bod, id = qrFileName.split("_")
@@ -46,10 +52,14 @@ def main():
         print(f"{name} 명찰을 만들기 시작합니다")
 
         backgroundFilename = ["background.jpg", "backgroundB.jpg"]
-        if bod == "선생님":
+        if bod in ["선생님", "간사님", "목사님", "전도사님"]:
             background = cv2.imread(f"{dataSourcePath}/{backgroundFilename[1]}")
-            grade = "선생님"
+            grade = bod
             textColor = (156, 134, 212, 1)
+        elif bod == "깍두기":
+            background = cv2.imread(f"{dataSourcePath}/{backgroundFilename[0]}")
+            grade = bod
+            textColor = (117, 53, 78, 1)
         else:
             background = cv2.imread(f"{dataSourcePath}/{backgroundFilename[0]}")
             indexOfBod = bods.index(bod)
@@ -71,19 +81,22 @@ def main():
         textImage_PIL = Image.fromarray(textImage)
         draw = ImageDraw.Draw(textImage_PIL)
 
-        x0 = 200
+        x0 = 200 if len(name) > 2 else 450
         y0 = 1200
 
-        xLen = 2000
+        xLen = 2000 if len(name) > 2 else 1450
         xGap = int(xLen / (len(name) - 1 ))
 
         for idx, char in enumerate(name):
             draw.text((x0 + idx * xGap, 1200), char, font=font, fill=textColor)
         
-        draw.text((1400, 2200), f"{team} 조", font=smallFont, fill=textColor)
+        teamText = f"{team}조" if team > 0 else ""
+        draw.text((1400, 2200), teamText, font=smallFont, fill=textColor)
         
-        if grade == "선생님":
+        if grade in ["선생님", "목사님", "간사님", "깍두기"]:
             draw.text((2350, 2225), grade, font=superSmallFont, fill=textColor)
+        elif grade == "전도사님":
+            draw.text((2250, 2225), grade, font=superSmallFont, fill=textColor)
         else:
             draw.text((2500, 2225), grade, font=superSmallFont, fill=textColor)
 
