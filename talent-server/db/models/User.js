@@ -29,6 +29,10 @@ class User {
 
     return { UPDATED, originalTalent };
   }
+  static async getTeamMembers({ team }) {
+    const USERS = await UserModel.find({ team });
+    return USERS;
+  }
 }
 
 export { User };

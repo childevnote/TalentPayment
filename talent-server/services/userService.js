@@ -105,6 +105,23 @@ class userHandle {
     console.log(USER?.id);
     return USER;
   }
+
+  static async getMemebersOf_aTeam({ team }) {
+    if (!team)
+      console_logger(
+        "Service Error",
+        "UserService : no team for getMembersOf_aTeam method",
+        true
+      );
+
+    const USERS = (await User.getTeamMembers({ team })) ?? [];
+
+    if (USERS.length == 0)
+      console_logger("Service Error", `No member in team ${team}`, true);
+
+    console.log(USERS);
+    return USERS;
+  }
 }
 
 export { userHandle };

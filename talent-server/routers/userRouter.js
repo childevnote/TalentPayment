@@ -61,7 +61,30 @@ userRouter.post("/user/update", async (req, res, next) => {
       res.status(503).send({ message: "internal server error" });
 
     res.status(201).send({ status: "succesfully updated", user: UPDATE_USER });
-  } catch (err) {}
+  } catch (err) {
+    console_logger("R.Error Catcher", err.message, true);
+  }
+});
+
+userRouter.post("/user/readteam", async (req, res, next) => {
+  try {
+    const { team } = req.body;
+
+    if (!team) {
+      console_logger("Router Error", "There is no Team for user Router", true);
+    }
+
+    const USERS = (await userHandle.getMemebersOf_aTeam({ team })) ?? [];
+
+    if (USERS.length == 0)
+      res
+        .status(503)
+        .send({ message: `no team memeber found on team ${team}` });
+
+    res.status(201).send({ USERS });
+  } catch (err) {
+    console_logger("R.Error Catcher", err.message, true);
+  }
 });
 
 export { userRouter };
