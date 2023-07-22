@@ -6,8 +6,8 @@ const userRouter = Router();
 
 userRouter.post("/user/create", async (req, res, next) => {
   try {
-    const { name, id } = req.body;
-    const NEW_USER = await userHandle.addUser({ name, id });
+    const { name, id, team } = req.body;
+    const NEW_USER = await userHandle.addUser({ name, id, team });
 
     res.status(201).send({ NEW_USER });
   } catch (err) {

@@ -2,7 +2,7 @@ import { User } from "../db/index.js";
 import console_logger from "../middlewares/console_logger.js";
 
 class userHandle {
-  static async addUser({ name, id }) {
+  static async addUser({ name, id, team }) {
     if (!name)
       console_logger(
         "Service Error",
@@ -13,12 +13,13 @@ class userHandle {
     const NEW_USER = {
       name,
       id,
+      team,
     };
     const CREATED_USER = await User.create({ USER: NEW_USER });
     console_logger("Service Info", "UserService : user created", false);
     console.log(CREATED_USER);
 
-    return true;
+    return CREATED_USER;
   }
 
   static async getUserName({ id }) {
