@@ -103,7 +103,7 @@ class userHandle {
       console_logger("Service Error", "There is no such named user", true);
 
     console.log(USER?.id);
-    return true;
+    return USER;
   }
 }
 
