@@ -2,12 +2,12 @@ import axios from "axios";
 
 // const backendPortNumber = "3001";
 // const serverUrl = "http://localhost:" + backendPortNumber + "/";
-// const serverUrl = "http://172.20.10.3:5001/";
+const serverUrl = "http://172.20.10.4:3001/";
 // const serverUrl = "http://172.16.20.84:5001/";
 // const serverUrl = "http://192.168.0.118:5001/";
 // const serverUrl = "http://192.168.0.6:5001/";
 // const serverUrl = "http://localhost:5001/";
-const serverUrl = "http://13.125.25.144:3001/";
+// const serverUrl = "http://13.125.25.144:3001/";
 
 async function get(endpoint, params = "") {
   return await axios.get(serverUrl + endpoint + "/" + params, {

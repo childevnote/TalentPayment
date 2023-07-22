@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, StyleSheet, Vibration, View, Text } from "react-native";
 import { Camera, CameraType } from "react-native-camera-kit";
 
-import * as Api from "../api";
-
 export default function QrScanner({ navigation, target = "pay" }) {
   const [scaned, setScaned] = useState(true);
   const ref = useRef(null);
@@ -21,7 +19,7 @@ export default function QrScanner({ navigation, target = "pay" }) {
 
     let converted = {};
     try {
-      converted = JSON.parse(data);
+      converted = Number(JSON.parse(data));
       alert(converted);
     } catch (err) {
       Alert.alert("오류", "유효하지 않은 QR코드입니다! 다시 시도해주세요", [

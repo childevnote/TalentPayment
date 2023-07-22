@@ -11,18 +11,10 @@ import {
   Text,
 } from "react-native";
 
-const MockUp = [
-  {
-    id: "123456",
-    name: "명하준",
-    age: 15,
-    team: 7,
-    talent: 50000,
-  },
-];
+import * as API from "../api.js";
 
 export default function PayScreen({ route }) {
-  const id = route.carams?.id ?? -1;
+  const id = route.params?.id ?? -1;
   const [text, setText] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [payAmount, setPayAmount] = useState(0);
@@ -34,11 +26,36 @@ export default function PayScreen({ route }) {
     }
   }, [id]);
 
-  const getUser = useCallback((targetId) => {
-    // 나중에 API 써서 쿼리하는 걸로 바꿔야 함
-    const res = MockUp.filter((item) => item.id === targetId);
-    if (res.length) return res;
-  });
+  const getData = async function (id) {
+    const data = await API.post("user/read", {
+      id,
+    });
+
+    const { username, account } = data.data;
+
+    if (!username) {
+      alert("조회 실패");
+      return;
+    }
+
+    const message = username + " 학생이 조회되었습니다!";
+    if (data?.length) Alert.alert("조회 성공", message);
+
+    // {
+    //   id: "123456",
+    //   name: "명하준",
+    //   age: 15,
+    //   team: 7,
+    //   talent: 50000,
+    // },
+
+    setUserInfo({
+      id,
+      name: username,
+      talent: account,
+    });
+    Keyboard.dismiss();
+  };
 
   return (
     <KeyboardAvoidingView
@@ -69,18 +86,7 @@ export default function PayScreen({ route }) {
             <Button
               title="조회하기"
               onPress={() => {
-                if (text) {
-                  const data = getUser(text);
-                  const message = data[0].name + " 학생이 조회되었습니다!";
-                  if (data?.length) Alert.alert("조회 성공", message);
-                  setUserInfo(data[0]);
-                  Keyboard.dismiss();
-                } else {
-                  Alert.alert(
-                    "경고",
-                    "아무 ID도 입력되지 않았어요! 다시 시도해주세요"
-                  );
-                }
+                getData(text);
               }}
             />
           </View>
