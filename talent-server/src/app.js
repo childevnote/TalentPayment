@@ -20,6 +20,21 @@ rootRouter.get("/", async function (req, res, next) {
   }
 });
 
+rootRouter.get("/help/:place", async function (req, res, next) {
+  try {
+    const place = req.params.place;
+    console_logger(
+      "HELP WANTED",
+      `🚨🚨🚨 HELP WANTED ON ${place}. Move Move Move`,
+      true
+    );
+
+    res.status(201).send({ result: "called" });
+  } catch (err) {
+    console_logger("Root Router", err.message, true);
+  }
+});
+
 app.use(rootRouter);
 app.use(userRouter);
 
