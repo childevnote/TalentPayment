@@ -3,11 +3,13 @@ import os
 
 def main():
     dataPath = "./data"
-    qrPath = "./images"
-    participantsPath = "participants.txt"
+    # qrPath = "./images"
+    qrPath = "./additionalImages"
+    # participantsPath = "participants.txt"
+    participantsPath = "addition.txt"
     # participantsPath = "test.txt"
 
-    serverLink = "http://localhost:3001"
+    serverUrl = "http://15.164.215.123:3001"
 
     participants = []
     with open(f"{dataPath}/{participantsPath}", "+r") as f:
@@ -76,7 +78,7 @@ def main():
     for person in participants:
         print(person)
         # print(f"{person['team']}, {person['name']}, {person['id']} will be requested")
-        server.post(f"{serverLink}/user/create", {
+        server.post(f"{serverUrl}/user/create", {
             "team": person["team"],
             "name": person["name"],
             "id": person["id"]

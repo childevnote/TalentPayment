@@ -7,6 +7,8 @@ def main():
     # filename = "participants.txt"
     filename = "addition.txt"
     # filename = "test.txt"
+    outDirectory = "additionalImages"
+    # outDirectory = "images"
 
     qrFilename = ""
     qrNames = []
@@ -64,7 +66,7 @@ def main():
 
             newImg = qrcode.make(f"{newId}")
             # newImg.save(f"images/{qrFilename}_{newId}.png")
-            newImg.save(f"additionalImages/{qrFilename}_{newId}.png")
+            newImg.save(f"{outDirectory}/{qrFilename}_{newId}.png")
         
         fs.close()
     
