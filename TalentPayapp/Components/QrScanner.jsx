@@ -1,38 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, StyleSheet, Vibration, View, Text } from "react-native";
 import { Camera, CameraType } from "react-native-camera-kit";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function QrScanner({ navigation, target = "pay" }) {
   const [scaned, setScaned] = useState(true);
   const ref = useRef(null);
 
-  useEffect(() => {
-    // 종료후 재시작을 했을때 초기화
-    setScaned(true);
-  }, []);
+  const isFocused = useIsFocused();
 
-  const barCodeReadHandle = (event) => {
+  useEffect(() => {
+    setScaned(true);
+  }, [isFocused]);
+
+  const onBarCodeRead = (event) => {
     if (!scaned) return;
     setScaned(false);
     Vibration.vibrate();
     const data = event.nativeEvent.codeStringValue;
 
-    let converted = {};
     try {
-      converted = Number(JSON.parse(data));
-      alert(converted);
+      dataNumber = Number(data);
+      navigation.push("pay", { id: dataNumber });
     } catch (err) {
-      Alert.alert("오류", "유효하지 않은 QR코드입니다! 다시 시도해주세요", [
-        { text: "확인", onPress: () => setScaned(true) },
-      ]);
-    }
-
-    if (!converted) {
-      Alert.alert("오류", "유효하지 않은 QR코드입니다! 다시 시도해주세요", [
-        { text: "확인", onPress: () => setScaned(true) },
-      ]);
-    } else {
-      navigation.push(target, { id: converted });
+      alert(err);
     }
   };
 
@@ -47,7 +38,7 @@ export default function QrScanner({ navigation, target = "pay" }) {
       laserColor="rgba(0, 0, 0, 0)"
       frameColor="rgba(0, 0, 0, 0)"
       surfaceColor="rgba(0, 0, 0, 0)"
-      onReadCode={barCodeReadHandle}
+      onReadCode={onBarCodeRead}
     />
   );
 }

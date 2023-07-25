@@ -45,28 +45,9 @@ export default function App() {
           inactiveColor="#3e2465"
           barStyle={{ backgroundColor: "#694fad" }}
           options={{
-            headerShown: false,
             title: "홈",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="home" color={color} size={32} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Setting"
-          component={SettingScreen}
-          activeColor="#f0edf6"
-          inactiveColor="#3e2465"
-          barStyle={{ backgroundColor: "#694fad" }}
-          options={{
-            headerShown: false,
-            title: "설정하기",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="cog-outline"
-                color={color}
-                size={32}
-              />
             ),
           }}
         />
@@ -77,8 +58,7 @@ export default function App() {
           inactiveColor="#3e2465"
           barStyle={{ backgroundColor: "#694fad" }}
           options={{
-            headerShown: false,
-            title: "도움요청",
+            title: "도움",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name="comment-alert"

@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Text,
+  TouchableOpacity,
 } from "react-native";
 
 import * as API from "../api.js";
@@ -19,26 +20,50 @@ export default function PayScreen({ route }) {
   const [userInfo, setUserInfo] = useState(null);
   const [payAmount, setPayAmount] = useState(0);
 
+  const handlePay = useCallback(async (updateAmount) => {
+    if (userInfo?.talent < updateAmount) {
+      Alert.alert("결제 실패", "잔액이 부족합니다");
+    } else {
+      const newData = await API.post("user/update", {
+        id: userInfo.id,
+        updateAmount,
+      });
+
+      const { id, name, talent, team } = newData.data.user.UPDATED;
+
+      if (updateAmount > 0)
+        Alert.alert("충전 완료", `잔액은 ${talent} 달란트 입니다`);
+      else Alert.alert("결제 완료", `잔액은 ${talent} 달란트 입니다`);
+
+      setUserInfo({
+        id,
+        name,
+        talent,
+        team,
+      });
+    }
+  });
+
   useEffect(() => {
     if (id !== -1) {
-      res = getUser(id);
+      res = getData(id);
       if (res?.length) setUserInfo(res[0]);
     }
   }, [id]);
 
   const getData = async function (id) {
-    const data = await API.post("user/read", {
+    const data = await API.post("user/find", {
       id,
     });
 
-    const { username, account } = data.data;
+    const { username, talent, team } = data.data;
 
     if (!username) {
       alert("조회 실패");
       return;
     }
 
-    const message = username + " 학생이 조회되었습니다!";
+    const message = username + "이(가) 조회되었습니다!";
     if (data?.length) Alert.alert("조회 성공", message);
 
     // {
@@ -52,7 +77,8 @@ export default function PayScreen({ route }) {
     setUserInfo({
       id,
       name: username,
-      talent: account,
+      talent,
+      team,
     });
     Keyboard.dismiss();
   };
@@ -92,49 +118,76 @@ export default function PayScreen({ route }) {
           </View>
           {userInfo?.name ? (
             <View style={{ padding: 15 }}>
-              <View style={{ alignItems: "flex-start", marginBottom: 5 }}>
+              <View
+                style={{
+                  justifyContent: "flex-start",
+                  alignItems: "flex-end",
+                  marginBottom: 5,
+                  flexDirection: "row",
+                }}
+              >
                 <Text style={{ fontSize: 32, fontWeight: "bold" }}>
-                  {userInfo.team}조 {userInfo.name} 학생
+                  {userInfo?.team == -1
+                    ? `${userInfo.name}`
+                    : `${userInfo.team}조 ${userInfo.name}`}{" "}
                 </Text>
+                <Text style={{ fontSize: 28 }}>님의 잔고는</Text>
               </View>
               <View style={{ alignItems: "flex-end" }}>
                 <Text style={{ fontSize: 24 }}>
-                  보유 금액 : {userInfo.talent} 달란트
+                  {userInfo.talent} 달란트 입니다
                 </Text>
               </View>
-              <View
-                style={{
-                  marginTop: 20,
-                  alignItems: "center",
-                  borderWidth: 0,
-                  borderColor: "#000",
-                  borderTopWidth: 1,
-                  padding: 15,
-                  width: "100%",
-                }}
-              >
-                <Text style={{ fontSize: 24 }}>결제할 금액을 입력해주세요</Text>
-                <TextInput
-                  style={{ ...styles.input, width: 350 }}
-                  value={payAmount}
-                  placeholder="얼마나 사용할까요?"
-                  keyboardType="numeric"
-                  onChangeText={(e) => {
-                    setPayAmount(e);
+              <View style={styles.payWrapper}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-between",
                   }}
-                />
-              </View>
-              <View style={styles.btnContainer}>
-                <Button
-                  title="결제하기"
-                  onPress={() => {
-                    if (userInfo?.talent < payAmount)
-                      Alert.alert("결제 실패", "승인 거부 : 잔고 부족");
-                    else {
-                      Alert.alert("추후 구현");
-                    }
+                >
+                  {[1, 2, 3].map((talent, idx) => (
+                    <TouchableOpacity
+                      key={`positiveTalent{key}`}
+                      style={{ ...styles.button, backgroundColor: "#ffd8c2" }}
+                      onPress={() => handlePay(-talent)}
+                    >
+                      <Text style={styles.buttonText}>-{talent} </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <TouchableOpacity
+                  key={"postivieTalent5"}
+                  style={{ ...styles.button, backgroundColor: "#ffbc8f" }}
+                  onPress={() => handlePay(-5)}
+                >
+                  <Text style={styles.buttonText}>-5 달란트</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-between",
                   }}
-                />
+                >
+                  {[1, 2, 3].map((talent, idx) => (
+                    <TouchableOpacity
+                      key={`negativeTalent${idx}`}
+                      style={{ ...styles.button, backgroundColor: "#c2daff" }}
+                      onPress={() => handlePay(talent)}
+                    >
+                      <Text style={styles.buttonText}>+{talent} </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <TouchableOpacity
+                  style={{ ...styles.button, backgroundColor: "#8fbaff" }}
+                  onPress={() => handlePay(5)}
+                >
+                  <Text style={styles.buttonText}>+5 달란트</Text>
+                </TouchableOpacity>
               </View>
             </View>
           ) : (
@@ -162,5 +215,22 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginTop: 0,
+  },
+  payWrapper: {
+    width: "100%",
+    marginTop: 20,
+  },
+  button: {
+    height: 70,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 0.5,
+    paddingHorizontal: 30,
+    marginBottom: 20,
+  },
+  buttonText: {
+    fontSize: 32,
+    fontWeight: "bold",
   },
 });

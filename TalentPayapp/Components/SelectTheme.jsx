@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function SelectTheme() {
-  const [selectedButton, setSelectedButton] = useState(null);
-
+export default function SelectTheme({ selectedButton, setSelectedButton }) {
   const handleButtonPress = (theme) => {
     setSelectedButton(theme);
   };
@@ -19,31 +17,31 @@ export default function SelectTheme() {
         <TouchableOpacity
           style={[
             styles.button,
-            selectedButton === "카페" && styles.selectedButton,
+            selectedButton === "cafe" && styles.selectedButton,
           ]}
-          onPress={() => handleButtonPress("카페")}
+          onPress={() => handleButtonPress("cafe")}
         >
-          <Text style={styles.buttonText}>☕️카페</Text>
+          <Text style={styles.buttonText}>☕️ 카페</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.button,
-            selectedButton === "과자" && styles.selectedButton,
+            selectedButton === "cookie" && styles.selectedButton,
           ]}
-          onPress={() => handleButtonPress("과자")}
+          onPress={() => handleButtonPress("cookie")}
         >
-          <Text style={styles.buttonText}>🍪과자</Text>
+          <Text style={styles.buttonText}>🍪 간식</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.button,
-            selectedButton === "식당" && styles.selectedButton,
+            selectedButton === "restorant" && styles.selectedButton,
           ]}
-          onPress={() => handleButtonPress("식당")}
+          onPress={() => handleButtonPress("restorant")}
         >
-          <Text style={styles.buttonText}>🍽️식당</Text>
+          <Text style={styles.buttonText}>🍽️ 식당</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 100,
+    paddingTop: 120,
     paddingHorizontal: 10,
   },
   container: {

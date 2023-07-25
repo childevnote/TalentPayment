@@ -15,9 +15,9 @@ export default function HomeScreen({ navigation }) {
         }}
         source={require("../assets/camp_app_bg.png")}
       />
-      <View style={styles.logoContainer}>
+      {/* <View style={styles.logoContainer}>
         <Image source={require("../assets/logo_x.png")} style={styles.logo} />
-      </View>
+      </View> */}
       <View style={{ backgroundColor: "#FFF" }}>
         <Text
           style={{
