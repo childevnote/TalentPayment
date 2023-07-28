@@ -4,9 +4,16 @@ import Dashboard from "./Dashboard";
 const MostPay: React.FC = () => {
   // 사용자별 사용 금액 데이터
   const userPayData = [
-    { name: "User 1", amount: 100 },
-    { name: "User 2", amount: 200 },
-    { name: "User 3", amount: 150 },
+       { name: "User 1", amount: 1000 },
+    { name: "User 2", amount: 2000 },
+    { name: "User 3", amount: 1500 },
+    { name: "User 4", amount: 1500 },
+    { name: "User 5", amount: 700 },
+    { name: "User 6", amount: 2300 },
+    { name: "User 7", amount: 2400 },
+    { name: "User 8", amount: 11500 },
+    { name: "User 9", amount: 150 },
+    { name: "User 10", amount: 10 },
   ];
 
   return (

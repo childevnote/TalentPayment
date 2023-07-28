@@ -15,7 +15,7 @@ const AnimatedMegaphone = () => {
                         transform: "rotateZ(0deg)",
                     },
                 },
-                animation: "rotateAnimation 3s ease-in-out infinite",
+                animation: "rotateAnimation 1s ease-in-out infinite",
             }}
         >
             <img

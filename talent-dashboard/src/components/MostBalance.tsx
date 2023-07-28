@@ -7,7 +7,13 @@ const MostBalance: React.FC = () => {
     { name: "User 1", balance: 1000 },
     { name: "User 2", balance: 2000 },
     { name: "User 3", balance: 1500 },
-
+    { name: "User 4", balance: 1500 },
+    { name: "User 5", balance: 700 },
+    { name: "User 6", balance: 2300 },
+    { name: "User 7", balance: 2400 },
+    { name: "User 8", balance: 11500 },
+    { name: "User 9", balance: 150 },
+    { name: "User 10", balance: 10 },
   ];
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import './Rate.css';
 
 type DataItem = {
     name: string;
@@ -17,29 +17,20 @@ const Dashboard: React.FC<DashboardProps> = ({ title, data, valueKey }) => {
     const sortedData = [...data].sort((a, b) => b[valueKey] - a[valueKey]);
 
     return (
-        <div>
-            <h2>{title}</h2>
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: "bold" }}>순위</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }}>이름</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }}>{valueKey}</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {sortedData.map((item, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{index + 1}위</TableCell>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item[valueKey]} 달란트</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
+        <div className="leaderboard">
+        <h1>
+          <svg className="ico-cup">
+          </svg>
+          {title}
+        </h1>
+        {sortedData.slice(0, 5).map((item, index) => (
+            <li key={index}>
+              <mark>{item.name}</mark>
+              <small>{item[valueKey]} 달란트</small>
+            </li>
+          ))}
+      </div>
+      
     );
 };
 
