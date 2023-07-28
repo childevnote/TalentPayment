@@ -6,31 +6,29 @@ import RealTime from "../components/RealTime"
 import MostBalance from "../components/MostBalance"
 import MostPay from "../components/MostPay"
 
+
+const fontUrl = 'https://fonts.googleapis.com/css?family=Poor+Story:400';
+const fontStyles = `@import url('${fontUrl}');`;
+
 export const MainPage: React.FC = () => {
     return (
         <FullLayout alignCentered>
-            <Spacing size={6} />
+            <style>{fontStyles}</style> 
             <Typography
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    textAlign: "center",
-                    backgroundColor: "lavender",
-                    borderRadius: "1rem",
-                    paddingLeft: "1rem", paddingRight: "1rem"
-                }}
                 fontWeight={'bold'}
                 variant="h2"
+                style={{ fontFamily: 'Poor Story, sans-serif'}} 
             > <AnimatedMegaphone />
-                <span style={{ marginRight: "1rem" }}>정의 페이 달란트 현황</span>
+                <span style={{ marginRight: "1rem", }}>정의 페이 달란트 현황</span>
             </Typography>
-            <RealTime />
+            <Spacing size={3} />
 
             <div style={{ display: "flex", justifyContent: "center", gap: "3rem" }}>
                 <MostBalance />
                 <MostPay />
             </div>
+            <Spacing size={3} />
+            <RealTime />
         </FullLayout>
     )
 }
