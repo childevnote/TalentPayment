@@ -47,7 +47,8 @@ body {
 .leaderboard li {
     position: relative;
     z-index: 1;
-    font-size: 14px;
+    width: 450px;
+    font-size: 22px;
     counter-increment: leaderboard;
     padding: 18px 10px 18px 50px;
     cursor: pointer;
@@ -164,11 +165,8 @@ body {
 
 .leaderboard li:nth-child(5) {
     background: #c24448;
-}
+    border-radius: 0 0 15px 15px;
 
-.leaderboard li:nth-child(6) {
-    background: #b03d41;
-    border-radius: 0 0 10px 20px;
 }
 
 .leaderboard li:nth-child(2) mark::before,

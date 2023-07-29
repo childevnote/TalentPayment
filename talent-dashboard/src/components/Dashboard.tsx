@@ -1,5 +1,6 @@
 import React from "react";
 import './Rate.css';
+import { Typography } from "@mui/material";
 
 type DataItem = {
     name: string;
@@ -21,14 +22,18 @@ const Dashboard: React.FC<DashboardProps> = ({ title, data, valueKey }) => {
         <h1>
           <svg className="ico-cup">
           </svg>
-          {title}
-        </h1>
+          <text style={{ fontFamily: 'Poor Story, sans-serif', fontSize:'27px'}} >{title}</text>
+        </h1><Typography
+          style={{ fontFamily: 'Poor Story, sans-serif'}} 
+          fontWeight={'bold'}
+          >
         {sortedData.slice(0, 5).map((item, index) => (
             <li key={index}>
               <mark>{item.name}</mark>
               <small>{item[valueKey]} 달란트</small>
             </li>
           ))}
+        </Typography>
       </div>
       
     );

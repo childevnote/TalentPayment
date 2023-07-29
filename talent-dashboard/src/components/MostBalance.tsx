@@ -17,7 +17,7 @@ const MostBalance: React.FC = () => {
   ];
 
   return (
-    <Dashboard title="남은 달란트가 가장 많은 사람은 누구인가요?" data={userBalanceData} valueKey="balance" />
+    <Dashboard title="남은 달란트가 가장 많은 사람은?" data={userBalanceData} valueKey="balance" />
   );
 };
 

@@ -19,7 +19,8 @@ const RealTime: React.FC = () => {
   fontWeight={'bold'}
   style={{ fontFamily: 'Poor Story, sans-serif'}} 
 > 
-  <span style={{ marginRight: "1rem", }}>현재시각 - {currentTime}</span>
+  <span style={{ marginRight: "1rem",fontSize:'27px' }}> [ 현재시각 {currentTime} ]  </span>
+  
 </Typography>;
 };
 
