@@ -10,18 +10,104 @@ import {
   Keyboard,
   Text,
   TouchableOpacity,
+  ScrollView,
+  Image,
 } from "react-native";
 
 import * as API from "../api.js";
+
+function CoinImage() {
+  return (
+    <Image
+      style={{
+        width: 50,
+        height: 34,
+      }}
+      source={require("../assets/coin.png")}
+    />
+  );
+}
+function CoinsImage() {
+  return (
+    <Image
+      style={{
+        width: 50,
+        height: 47,
+      }}
+      source={require("../assets/coins.png")}
+    />
+  );
+}
+function BillImage() {
+  return (
+    <Image
+      style={{
+        width: 50,
+        height: 34,
+      }}
+      source={require("../assets/bill.png")}
+    />
+  );
+}
+function BillsImage() {
+  return (
+    <Image
+      style={{
+        width: 50,
+        height: 31,
+      }}
+      source={require("../assets/bills.png")}
+    />
+  );
+}
+
+function PayElement({ handlePay = () => {}, talent, imageType = "coin" }) {
+  return (
+    <View style={styles.buttonWrapper}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity
+          key={`positiveTalent{key}`}
+          style={{
+            ...styles.button,
+            backgroundColor: talent >= 0 ? "#c2daff" : "#ffd8c2",
+          }}
+          onPress={() => handlePay(talent)}
+        >
+          {imageType == "coin" && <CoinImage />}
+          {imageType == "coins" && <CoinsImage />}
+          {imageType == "bill" && <BillImage />}
+          {imageType == "bills" && <BillsImage />}
+        </TouchableOpacity>
+        <Text style={styles.buttonText}>
+          {talent >= 0 ? talent : -talent} 달란트{" "}
+        </Text>
+      </View>
+      <View
+        style={{
+          backgroundColor: "#DDD",
+          padding: 5,
+          borderRadius: 10,
+        }}
+      >
+        <Text style={{ fontSize: 20, color: "#444" }}>
+          {" "}
+          {talent >= 0 ? "충전하기" : "결제하기"}{" "}
+        </Text>
+      </View>
+    </View>
+  );
+}
 
 export default function PayScreen({ route }) {
   const id = route.params?.id ?? -1;
   const [text, setText] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [payAmount, setPayAmount] = useState(0);
+  const [isPayWait, setIsPayWait] = useState(false);
 
   const handlePay = useCallback(async (updateAmount) => {
-    if (userInfo?.talent < updateAmount) {
+    setIsPayWait(true);
+    if (updateAmount < 0 && userInfo?.talent < -updateAmount) {
       Alert.alert("결제 실패", "잔액이 부족합니다");
     } else {
       const newData = await API.post("user/update", {
@@ -42,6 +128,7 @@ export default function PayScreen({ route }) {
         team,
       });
     }
+    setIsPayWait(false);
   });
 
   useEffect(() => {
@@ -89,148 +176,202 @@ export default function PayScreen({ route }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          style={{
-            inner: {
-              padding: 24,
-              flex: 1,
-              justifyContent: "space-around",
-            },
+        <ScrollView
+          vertical
+          contentContainerStyle={{
+            padding: 10,
           }}
         >
-          <TextInput
-            style={styles.input}
-            value={text}
-            placeholder="학생 ID를 입력해주세요(4자리)"
-            keyboardType="numeric"
-            onChangeText={(e) => {
-              setText(e);
-            }}
-          />
-
-          <View style={styles.btnContainer}>
-            <Button
-              title="조회하기"
-              onPress={() => {
-                getData(text);
+          {isPayWait && (
+            <View
+              style={{
+                position: "absolute",
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />
-          </View>
+            >
+              <Text style={{ fontSize: 24 }}>결제 시도중...</Text>
+            </View>
+          )}
+          {userInfo?.id?.length > 0 ? (
+            <View>
+              <Text>다시 조회하기</Text>
+            </View>
+          ) : (
+            <View style={{ flexDirection: "row" }}>
+              <TextInput
+                style={styles.input}
+                value={text}
+                placeholder="학생 ID를 입력해주세요(4자리)"
+                keyboardType="numeric"
+                onChangeText={(e) => {
+                  setText(e);
+                }}
+              />
+              <View style={styles.btnContainer}>
+                <Button
+                  title="조회하기"
+                  onPress={() => {
+                    getData(text);
+                  }}
+                />
+              </View>
+            </View>
+          )}
           {userInfo?.name ? (
-            <View style={{ padding: 15 }}>
+            <View style={{ padding: 5 }}>
               <View
                 style={{
-                  justifyContent: "flex-start",
-                  alignItems: "flex-end",
-                  marginBottom: 5,
-                  flexDirection: "row",
+                  // backgroundColor: "#FFF",
+                  padding: 10,
+                  borderRadius: 10,
+                  marginVertical: 10,
                 }}
               >
-                <Text style={{ fontSize: 32, fontWeight: "bold" }}>
-                  {userInfo?.team == -1
-                    ? `${userInfo.name}`
-                    : `${userInfo.team}조 ${userInfo.name}`}{" "}
-                </Text>
-                <Text style={{ fontSize: 28 }}>님의 잔고는</Text>
-              </View>
-              <View style={{ alignItems: "flex-end" }}>
-                <Text style={{ fontSize: 24 }}>
-                  {userInfo.talent} 달란트 입니다
-                </Text>
+                <View
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "flex-end",
+                    marginBottom: 5,
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text style={{ fontSize: 32, fontWeight: "bold" }}>
+                    {userInfo?.team == -1
+                      ? `${userInfo.name}`
+                      : `${userInfo.team}조 ${userInfo.name}`}{" "}
+                  </Text>
+                  <Text style={{ fontSize: 28 }}>님의 잔고는</Text>
+                </View>
+                <View style={{ alignItems: "flex-end" }}>
+                  <Text style={{ fontSize: 24 }}>
+                    {userInfo.talent} 달란트 입니다
+                  </Text>
+                </View>
               </View>
               <View style={styles.payWrapper}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: "100%",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {[1, 2, 3].map((talent, idx) => (
-                    <TouchableOpacity
-                      key={`positiveTalent{key}`}
-                      style={{ ...styles.button, backgroundColor: "#ffd8c2" }}
-                      onPress={() => handlePay(-talent)}
-                    >
-                      <Text style={styles.buttonText}>-{talent} </Text>
-                    </TouchableOpacity>
-                  ))}
+                <View style={styles.payTitle}>
+                  <Text style={styles.payTitleText}>결제하기</Text>
                 </View>
 
-                <TouchableOpacity
-                  key={"postivieTalent5"}
-                  style={{ ...styles.button, backgroundColor: "#ffbc8f" }}
-                  onPress={() => handlePay(-5)}
-                >
-                  <Text style={styles.buttonText}>-5 달란트</Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: "100%",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {[1, 2, 3].map((talent, idx) => (
-                    <TouchableOpacity
-                      key={`negativeTalent${idx}`}
-                      style={{ ...styles.button, backgroundColor: "#c2daff" }}
-                      onPress={() => handlePay(talent)}
-                    >
-                      <Text style={styles.buttonText}>+{talent} </Text>
-                    </TouchableOpacity>
-                  ))}
+                <PayElement
+                  handlePay={handlePay}
+                  talent={-1}
+                  imageType="coin"
+                />
+                <PayElement
+                  handlePay={handlePay}
+                  talent={-2}
+                  imageType="coins"
+                />
+                <PayElement
+                  handlePay={handlePay}
+                  talent={-3}
+                  imageType="bill"
+                />
+                <PayElement
+                  handlePay={handlePay}
+                  talent={-5}
+                  imageType="bills"
+                />
+              </View>
+              <View style={styles.payWrapper}>
+                <View style={styles.payTitle}>
+                  <Text style={styles.payTitleText}>충전하기</Text>
                 </View>
-
-                <TouchableOpacity
-                  style={{ ...styles.button, backgroundColor: "#8fbaff" }}
-                  onPress={() => handlePay(5)}
-                >
-                  <Text style={styles.buttonText}>+5 달란트</Text>
-                </TouchableOpacity>
+                <PayElement
+                  handlePay={handlePay}
+                  talent={+1}
+                  imageType="coin"
+                />
+                <PayElement
+                  handlePay={handlePay}
+                  talent={+2}
+                  imageType="coins"
+                />
+                <PayElement
+                  handlePay={handlePay}
+                  talent={+3}
+                  imageType="bill"
+                />
+                <PayElement
+                  handlePay={handlePay}
+                  talent={+5}
+                  imageType="bills"
+                />
               </View>
             </View>
           ) : (
             <></>
           )}
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
     justifyContent: "center",
+    backgroundColor: "rgb(240, 242, 245)",
   },
   input: {
+    width: "70%",
     height: 60,
     margin: 12,
     borderWidth: 1,
-    padding: 10,
+    padding: 12,
     backgroundColor: "#FFF",
 
     borderRadius: 10,
+    borderColor: "#AAA",
+    fontSize: 20,
   },
   btnContainer: {
+    // width: "30%",
     marginTop: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
   payWrapper: {
     width: "100%",
-    marginTop: 20,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "#FFF",
+    borderRadius: 10,
   },
   button: {
+    width: 70,
     height: 70,
-    borderRadius: 10,
+    borderRadius: 35,
+    borderWidth: 0,
+
+    paddingHorizontal: 30,
+    marginRight: 10,
+
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 0.5,
-    paddingHorizontal: 30,
-    marginBottom: 20,
   },
   buttonText: {
-    fontSize: 32,
+    fontSize: 28,
+  },
+  payTitle: {
+    height: 50,
+    justifyContent: "center",
+  },
+  payTitleText: {
+    fontSize: 24,
     fontWeight: "bold",
+  },
+  buttonWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    // backgroundColor: "#FA0",
+    marginVertical: 10,
+    justifyContent: "space-between",
   },
 });
