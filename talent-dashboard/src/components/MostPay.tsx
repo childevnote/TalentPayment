@@ -17,7 +17,7 @@ const MostPay: React.FC = () => {
   ];
 
   return (
-    <Dashboard title="누가 가장 많이 사용했나요?" data={userPayData} valueKey="amount" />
+    <Dashboard title="달란트를 가장 많이 사용한 사람은?" data={userPayData} valueKey="amount" />
   );
 };
 
