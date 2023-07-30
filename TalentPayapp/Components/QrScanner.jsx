@@ -20,7 +20,7 @@ export default function QrScanner({ navigation, target = "pay" }) {
     const data = event.nativeEvent.codeStringValue;
 
     try {
-      dataNumber = Number(data);
+      const dataNumber = Number(data);
       navigation.push("pay", { id: dataNumber });
     } catch (err) {
       alert(err);

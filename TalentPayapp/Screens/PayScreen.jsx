@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Pressable,
 } from "react-native";
 
 import * as API from "../api.js";
@@ -82,18 +83,19 @@ function PayElement({ handlePay = () => {}, talent, imageType = "coin" }) {
           {talent >= 0 ? talent : -talent} 달란트{" "}
         </Text>
       </View>
-      <View
+      <Pressable
         style={{
           backgroundColor: "#DDD",
           padding: 5,
           borderRadius: 10,
         }}
+        onPress={() => handlePay(talent)}
       >
         <Text style={{ fontSize: 20, color: "#444" }}>
           {" "}
           {talent >= 0 ? "충전하기" : "결제하기"}{" "}
         </Text>
-      </View>
+      </Pressable>
     </View>
   );
 }
