@@ -62,7 +62,12 @@ function BillsImage() {
   );
 }
 
-function PayElement({ handlePay = () => {}, talent, imageType = "coin" }) {
+function PayElement({
+  handleLog = () => {},
+  handlePay = () => {},
+  talent,
+  imageType = "coin",
+}) {
   return (
     <View style={styles.buttonWrapper}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -89,7 +94,12 @@ function PayElement({ handlePay = () => {}, talent, imageType = "coin" }) {
           padding: 5,
           borderRadius: 10,
         }}
-        onPress={() => handlePay(talent)}
+        onPress={() => {
+          handlePay(talent);
+          if (talent < 0) {
+            handleLog(-talent);
+          }
+        }}
       >
         <Text style={{ fontSize: 20, color: "#444" }}>
           {" "}
@@ -106,6 +116,13 @@ export default function PayScreen({ route }) {
   const [userInfo, setUserInfo] = useState(null);
   const [payAmount, setPayAmount] = useState(0);
   const [isPayWait, setIsPayWait] = useState(false);
+
+  const handleLog = useCallback(async (updateAmount) => {
+    const updator = await API.post("log/create", {
+      payby: userInfo.id,
+      amount: updateAmount,
+    });
+  });
 
   const handlePay = useCallback(async (updateAmount) => {
     setIsPayWait(true);
@@ -260,21 +277,25 @@ export default function PayScreen({ route }) {
                 </View>
 
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={-1}
                   imageType="coin"
                 />
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={-2}
                   imageType="coins"
                 />
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={-3}
                   imageType="bill"
                 />
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={-5}
                   imageType="bills"
@@ -285,21 +306,25 @@ export default function PayScreen({ route }) {
                   <Text style={styles.payTitleText}>충전하기</Text>
                 </View>
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={+1}
                   imageType="coin"
                 />
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={+2}
                   imageType="coins"
                 />
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={+3}
                   imageType="bill"
                 />
                 <PayElement
+                  handleLog={handleLog}
                   handlePay={handlePay}
                   talent={+5}
                   imageType="bills"
